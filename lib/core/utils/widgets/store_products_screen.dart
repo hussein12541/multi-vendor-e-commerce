@@ -5,8 +5,10 @@ import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/st
 import 'package:multi_vendor_e_commerce_app/core/models/product_model.dart';
 import 'package:multi_vendor_e_commerce_app/core/utils/functions/is_arabic.dart';
 import 'package:multi_vendor_e_commerce_app/core/utils/widgets/products_screen_body.dart';
+import 'package:multi_vendor_e_commerce_app/core/utils/widgets/store_item.dart';
 import '../../../../generated/l10n.dart';
 import '../../models/store_model.dart';
+import '../styles/app_styles.dart';
 
 class StoreProductsScreen extends StatefulWidget {
   final List<ProductModel> products;
@@ -50,16 +52,17 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
 
 
   @override
-  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: Text(LanguageHelper.isArabic()?widget.store.arabic_name:widget.store.english_name)),
-      body: Column(
-        children: [
-          StoreBar(store: widget.store,),
-          Expanded(
+      body: CustomScrollView(
+
+
+        slivers: [
+          ProductDetailsAppBar(store: widget.store,),
+          SliverFillRemaining(
             child: ProductsBody(
+              isScrollable: false,
               products: widget.products,
               filteredProducts: filteredProducts,
               selectedSort: selectedSort,
@@ -87,6 +90,148 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
   }
 
 }
+class ProductDetailsAppBar extends StatelessWidget {
+  final StoreModel store;
+
+
+  const ProductDetailsAppBar({
+    super.key,
+    required this.store,
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool kIsArabic = LanguageHelper.isArabic();
+
+    return SliverAppBar(
+      actionsPadding: EdgeInsets.zero,
+      expandedHeight: 170,
+      pinned: true,
+      floating: false,
+      automaticallyImplyLeading: false,
+      titleTextStyle: AppStyles.bold20(context),
+      elevation: 4,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Hero(
+              tag: store.id,
+              child: StoreBar(store: store),
+            ),
+          ],
+        ),
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            final percent = ((constraints.maxHeight - kToolbarHeight) /
+                (170 - kToolbarHeight))
+                .clamp(0.0, 1.0);
+            final opacity = (1 - percent).clamp(0.0, 1.0);
+
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              height: 170 * opacity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.blue.withOpacity(0.2 * opacity)
+                    : Colors.white.withOpacity(0.1 * opacity),
+
+              ),
+              child: Row(
+                children: [
+                  // زر الرجوع
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Colors.black.withOpacity(0.5 * opacity),
+                        size: 20,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // صورة المنتج وتفاصيل
+                  Expanded(
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // صورة المنتج الصغيرة
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              store.imageUrl ?? '',
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.store, ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // اسم المنتج والتقييم
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  kIsArabic ? store.arabic_name : store.english_name,
+                                  style: AppStyles.semiBold18(context),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      store.rating.toString(),
+                                      style: AppStyles.bold16(context),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // زر المفضلة
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: FavoriteButton(
+                              store: store,
+                              onTap: () async {
+                                await context
+                                    .read<StoreCubit>()
+                                    .likeOnTap(store.id);
+                              },
+                              isDark: Theme.of(context).brightness == Brightness.dark,
+
+                            ),
+                            ),
+                ],
+              ),
+            );
+          },
+        ),
+        titlePadding: EdgeInsets.zero,
+      ),
+    );
+  }
+}
+
 
 
 
@@ -119,26 +264,44 @@ class _StoreBarState extends State<StoreBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-      child: Card(
-        color: Theme.of(context).cardColor,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center, // 🧠 دي مهمة علشان البادج ما ينزلش تحت
-            children: [
-              _buildStoreImage(),
-              const SizedBox(width: 16),
-              Expanded(child: _buildInfo(context)),
-            ],
+    return Stack(
+      children: [Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+        child: Card(
+          color: Theme.of(context).cardColor,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center, // 🧠 دي مهمة علشان البادج ما ينزلش تحت
+              children: [
+                _buildStoreImage(),
+                const SizedBox(width: 16),
+                Expanded(child: _buildInfo(context)),
+              ],
+            ),
           ),
         ),
       ),
+        Positioned(
+          top: 25,
+          left: 25,
+          child: FavoriteButton(
+            store: widget.store,
+            onTap: () async {
+              await context
+                  .read<StoreCubit>()
+                  .likeOnTap(widget.store.id);
+            },
+            isDark: Theme.of(context).brightness == Brightness.dark,
+
+          ),
+        ),
+
+      ]
     );
   }
 

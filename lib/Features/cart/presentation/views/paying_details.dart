@@ -10,6 +10,7 @@ import 'package:multi_vendor_e_commerce_app/core/utils/styles/app_styles.dart';
 import 'package:multi_vendor_e_commerce_app/core/utils/widgets/custom_button.dart';
 import 'package:multi_vendor_e_commerce_app/core/utils/widgets/custom_text_field.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../../../generated/l10n.dart';
 
 class PayingView extends StatefulWidget {
   final CartModel cart;
@@ -23,7 +24,7 @@ bool enableAddressTextField = false;
 String addressUrl = '';
 
 class _PayingViewState extends State<PayingView> {
-  final _formKey = GlobalKey<FormState>(); // 🌟 الخطوة الأولى
+  final _formKey = GlobalKey<FormState>();
 
   late TextEditingController nameController;
   late TextEditingController phoneController;
@@ -33,7 +34,7 @@ class _PayingViewState extends State<PayingView> {
   LatLng storeLocation = const LatLng(
     29.574217686990803,
     31.289961721105982,
-  ); // موقع المطعم
+  );
 
   int _selectedPaymentMethod = 0;
 
@@ -56,21 +57,20 @@ class _PayingViewState extends State<PayingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('الشحن')),
+      appBar: AppBar(title: Text(S.of(context).shipping)),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
-                // 🌟 لفيناها بفورم
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "تفاصيل المستخدم:",
-                      style: TextStyle(
+                    Text(
+                      S.of(context).userDetails,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -78,11 +78,11 @@ class _PayingViewState extends State<PayingView> {
                     const SizedBox(height: 16),
 
                     CustomTextFormField(
-                      hintText: 'الاسم كامل',
+                      hintText: S.of(context).fullName,
                       controller: nameController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'من فضلك أدخل الاسم كامل';
+                          return S.of(context).pleaseEnterYourName;
                         }
                         return null;
                       },
@@ -91,12 +91,12 @@ class _PayingViewState extends State<PayingView> {
                     const SizedBox(height: 16),
 
                     CustomTextFormField(
-                      hintText: 'رقم الهاتف',
+                      hintText: S.of(context).phone,
                       controller: phoneController,
                       textInputType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'من فضلك أدخل رقم الهاتف';
+                          return S.of(context).phone;
                         }
                         return null;
                       },
@@ -108,12 +108,12 @@ class _PayingViewState extends State<PayingView> {
                       children: [
                         Expanded(
                           child: CustomTextFormField(
-                            hintText: 'عنوان التوصيل',
+                            hintText: S.of(context).deliveryAddress,
                             controller: addressController,
                             readOnly: !enableAddressTextField,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'من فضلك أدخل عنوان التوصيل';
+                                return S.of(context).deliveryAddress;
                               }
                               return null;
                             },
@@ -133,7 +133,7 @@ class _PayingViewState extends State<PayingView> {
                               addressController.text = result['address'] ?? '';
                               addressUrl = result['url'] ?? '';
 
-                              // حساب المسافة
+                              // Calculate distance
                               double distanceKm =
                                   Geolocator.distanceBetween(
                                     storeLocation.latitude,
@@ -141,23 +141,22 @@ class _PayingViewState extends State<PayingView> {
                                     result['lat'],
                                     result['lng'],
                                   ) /
-                                  1000;
+                                      1000;
 
-                              // حساب الوزن الكلي في السلة
+                              // Calculate total weight in cart
                               double totalWeight = widget.cart.items.fold(
                                 0.0,
-                                (sum, item) =>
-                                    sum + (item.product.weight * item.quantity),
+                                    (sum, item) =>
+                                sum + (item.product.weight * item.quantity),
                               );
 
-                              // سعر الشحن لكل كم لكل كجم
-                              double costPerKmPerKg =
-                                  20; // مثال: 5 جنيه لكل كم لكل كجم
+                              // Shipping cost per km per kg
+                              double costPerKmPerKg = 20;
 
-                              // التكلفة = المسافة × الوزن الكلي × السعر لكل كم لكل كجم
+                              // Cost = distance × total weight × cost per km per kg
                               double cost =
                                   distanceKm * totalWeight * costPerKmPerKg;
-                              double minShippingCost = 40; // مثال 10 جنيه
+                              double minShippingCost = 40;
 
                               if (cost < minShippingCost) {
                                 cost = minShippingCost;
@@ -170,12 +169,12 @@ class _PayingViewState extends State<PayingView> {
                               });
 
                               print(
-                                "المسافة: ${distanceKm.toStringAsFixed(2)} كم",
+                                "Distance: ${distanceKm.toStringAsFixed(2)} km",
                               );
                               print(
-                                "إجمالي الوزن: ${totalWeight.toStringAsFixed(2)} كجم",
+                                "Total Weight: ${totalWeight.toStringAsFixed(2)} kg",
                               );
-                              print("التكلفة: ${cost.toStringAsFixed(2)} جنيه");
+                              print("Cost: ${cost.toStringAsFixed(2)} EGP");
                             }
                           },
                         ),
@@ -184,9 +183,9 @@ class _PayingViewState extends State<PayingView> {
 
                     const SizedBox(height: 24),
                     const Divider(height: 32),
-                    const Text(
-                      "الدفع:",
-                      style: TextStyle(
+                    Text(
+                      S.of(context).payment,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -197,7 +196,7 @@ class _PayingViewState extends State<PayingView> {
                       color: Theme.of(context).cardColor,
                       child: RadioListTile<int>(
                         title: Text(
-                          "الدفع عند الاستلام",
+                          S.of(context).cashOnDelivery,
                           style: AppStyles.semiBold18(context),
                         ),
                         value: 0,
@@ -212,15 +211,18 @@ class _PayingViewState extends State<PayingView> {
 
                     Card(
                       color: Theme.of(context).cardColor,
-                      child: const RadioListTile<int>(
-                        title: Text("الدفع أونلاين"),
-                        subtitle: Text(
-                          "غير متاح حاليًا 🚫",
-                          style: TextStyle(color: Colors.red),
+                      child: RadioListTile<int>(
+                        title: Text(
+                          S.of(context).payOnline,
+                          style: AppStyles.semiBold18(context),
                         ),
                         value: 1,
-                        groupValue: 0,
-                        onChanged: null,
+                        groupValue: _selectedPaymentMethod,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedPaymentMethod = value!;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -250,11 +252,10 @@ class _PayingViewState extends State<PayingView> {
                 ),
               );
             } else {
-              // ❌ فيه حاجة ناقصة
-              ShowMessage.showToast('من فضلك اكمل البيانات المطلوبة');
+              ShowMessage.showToast(S.of(context).pleaseFillData);
             }
           },
-          text: "التالي",
+          text: S.of(context).next,
         ),
       ),
     );

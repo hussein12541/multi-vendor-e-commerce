@@ -58,6 +58,7 @@ class ChickOutSuccess extends StatelessWidget {
                     
                     // Order details card (optional)
                     Card(
+                       color: Theme.of(context).cardColor,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

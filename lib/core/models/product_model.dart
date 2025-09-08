@@ -2,6 +2,7 @@ import 'package:multi_vendor_e_commerce_app/core/models/store_model.dart';
 import 'package:multi_vendor_e_commerce_app/core/models/wish_list_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'comment_model.dart';
 import 'rate_model.dart'; // لو حطيته في فايل مستقل
 
 class ProductModel {
@@ -24,6 +25,7 @@ class ProductModel {
   final StoreModel store;
   final List<RateModel> rates;
   final String created_at;
+  final List<CommentModel> comments;
 
   ProductModel( {
     required this.created_at,
@@ -45,6 +47,7 @@ class ProductModel {
     required this.wishlists,
     required this.store,
     required this.rates,
+    required this.comments,
   });
   double get averageRate {
     if (rates.isEmpty) return 0.0;
@@ -72,6 +75,7 @@ class ProductModel {
       'wishlists': wishlists.map((e) => e.toJson()).toList(),
       'stores': store.toJson(),
       'rates': rates.map((e) => e.toJson()).toList(),
+      'comments': comments.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -96,6 +100,7 @@ class ProductModel {
       wishlists: (json['wishlists'] as List?)?.map((e) => WishlistModel.fromJson(e)).toList() ?? [],
       store: StoreModel.fromJson(json['stores'], currentUserId:Supabase.instance.client.auth.currentUser!.id),
       rates: (json['rates'] as List?)?.map((e) => RateModel.fromJson(e)).toList() ?? [],
+      comments: (json['comments'] as List?)?.map((e) => CommentModel.fromJson(e)).toList() ?? [],
     );
   }
 }

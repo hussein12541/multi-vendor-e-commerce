@@ -58,6 +58,15 @@ class CartRepoImpl implements CartRepo {
     required double price,
   }) async {
     try {
+      for (var item in cart.items) {
+        await _api.postData(
+          path: 'rpc/update_product_after_order',
+          data: {
+            "p_product_id": item.product.id,
+            "p_bought_quantity": item.quantity,
+          },
+        );
+      }
       final orderId = const Uuid().v4();
       await _api.postData(
         path: 'orders',
@@ -86,9 +95,11 @@ class CartRepoImpl implements CartRepo {
         );
       }
 
+
+
+
       final response = await _api.getData(path: 'orders?id=eq.$orderId');
 final number = response.data[0]['number'].toString();
-
 
       
       return Right(number);

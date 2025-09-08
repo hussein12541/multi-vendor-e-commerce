@@ -3,9 +3,11 @@ class Assets {
   Assets._();
 
   static const String imagesArrowSwapHorizontal = 'assets/images/arrow-swap-horizontal.svg';
+  static const String imagesBox = 'assets/images/box.svg';
   static const String imagesFillter = 'assets/images/fillter.svg';
   static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesLogo = 'assets/images/logo.png';
+  static const String imagesLogout = 'assets/images/logout.svg';
   static const String jsonSadEmptyBox = 'assets/json/sad_empty_box.json';
   static const String jsonSuccess = 'assets/json/success.json';
 

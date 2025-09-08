@@ -8,7 +8,7 @@ class CustomTextFormField extends StatefulWidget {
     this.isPassword = false,
     required this.controller,
     this.validator,
-    this.onChange,  this.maxLines =1, this.prefixIcon,  this.readOnly = false,
+    this.onChange,  this.maxLines =1, this.prefixIcon,  this.readOnly = false, this.onSubmit,
   });
 
   final String hintText;
@@ -21,6 +21,7 @@ class CustomTextFormField extends StatefulWidget {
   final int maxLines;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChange;
+  final ValueChanged<String>? onSubmit;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -39,6 +40,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
       maxLines: widget.maxLines,
       onChanged: widget.onChange,
+      onFieldSubmitted: widget.onSubmit,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: widget.controller,
       validator: widget.validator,

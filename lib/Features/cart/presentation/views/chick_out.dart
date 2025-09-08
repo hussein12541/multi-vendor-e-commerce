@@ -79,8 +79,8 @@ class _ChickOutViewState extends State<ChickOutView> {
       appBar: AppBar(title: Text(S.of(context).checkout)),
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) => ModalProgressHUD(
-          inAsyncCall: (state is AddItemsToCartLoading),
-          dismissible: state is! AddItemsToCartLoading,
+          inAsyncCall: (state is AddItemsToCartLoading ||state is AddItemsToCartError ),
+          dismissible: (state is! AddItemsToCartLoading && state is! AddItemsToCartError),
           opacity: 0.4,
           // يعطي ظل خفيف وشيك
           progressIndicator: loadingWidget(context),
@@ -118,7 +118,7 @@ class _ChickOutViewState extends State<ChickOutView> {
                         address: widget.address,
                         isPaid: (widget.payWay == 1),
                         addressUrl: widget.addressUrl,
-                        price: widget.deliveryPrice + widget.cart.total,
+                        price: widget.deliveryPrice + widget.cart.total, context: context,
                       );
 
                       context.read<CartCubit>().clearCart(context);
@@ -153,7 +153,7 @@ class _ChickOutViewState extends State<ChickOutView> {
                 address: widget.address,
                 isPaid: (widget.payWay == 1),
                 addressUrl: widget.addressUrl,
-                price: widget.deliveryPrice + widget.cart.total,
+                price: widget.deliveryPrice + widget.cart.total, context: context,
               );
               context.read<CartCubit>().clearCart(context);
               Navigator.pushAndRemoveUntil(

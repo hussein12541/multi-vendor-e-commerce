@@ -106,7 +106,7 @@ class StoreItem extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: _FavoriteButton(
+              child: FavoriteButton(
                 store: store,
                 onTap: favoriteOnPressed,
                 isDark: isDark,
@@ -119,23 +119,23 @@ class StoreItem extends StatelessWidget {
   }
 }
 
-class _FavoriteButton extends StatefulWidget {
+class FavoriteButton extends StatefulWidget {
   final StoreModel store;
   final Future<void> Function() onTap;
 
   final bool isDark;
 
-  const _FavoriteButton({
+  const FavoriteButton({
     required this.store,
     required this.onTap,
     required this.isDark,
   });
 
   @override
-  State<_FavoriteButton> createState() => _FavoriteButtonState();
+  State<FavoriteButton> createState() => _FavoriteButtonState();
 }
 
-class _FavoriteButtonState extends State<_FavoriteButton> {
+class _FavoriteButtonState extends State<FavoriteButton> {
   bool isLoading = false;
 
   @override

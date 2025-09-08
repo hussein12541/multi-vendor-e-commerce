@@ -30,7 +30,7 @@ class HomeRepoImpl implements HomeRepo{
 @override
   Future<Either<Failure, List<ProductModel>>> getProducts({required String id}) async {
     try {
-      Response response=await _api.getData(path: 'products?select=*,stores(*,favorites_stores(*),store_reviews(*)),rates(*),wishlists(*)&is_show=eq.true&wishlists.user_id=eq.$id');
+      Response response=await _api.getData(path: 'products?select=*,order_items(*,orders(*)),comments(*),stores(*,favorites_stores(*),store_reviews(*)),rates(*),wishlists(*)&is_show=eq.true&order_items.orders.user_id=eq.$id&wishlists.user_id=eq.$id');
       List<ProductModel>products=[];
       for(var item in response.data){
         products.add(ProductModel.fromJson(item));

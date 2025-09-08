@@ -1,0 +1,437 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/store_cubit/store_cubit.dart';
+import 'package:multi_vendor_e_commerce_app/core/models/product_model.dart';
+import 'package:multi_vendor_e_commerce_app/core/utils/functions/is_arabic.dart';
+import 'package:multi_vendor_e_commerce_app/core/utils/widgets/products_screen_body.dart';
+import 'package:multi_vendor_e_commerce_app/core/utils/widgets/store_item.dart';
+import '../../../../generated/l10n.dart';
+import '../../models/store_model.dart';
+import '../styles/app_styles.dart';
+
+class StoreProductsScreen extends StatefulWidget {
+  final List<ProductModel> products;
+  final StoreModel store;
+
+  const StoreProductsScreen({super.key, required this.products, required this.store});
+
+  @override
+  State<StoreProductsScreen> createState() => _StoreProductsScreenState();
+}
+
+class _StoreProductsScreenState extends State<StoreProductsScreen> {
+  List<ProductModel> filteredProducts = [];
+  String searchQuery = '';
+  String selectedSort = 'default';
+
+  final TextEditingController searchController = TextEditingController();
+  final TextEditingController priceFromController = TextEditingController();
+  final TextEditingController priceToController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredProducts = widget.products;
+  }
+
+  void _filterProducts(String query) {
+    setState(() {
+      searchQuery = query.toLowerCase();
+      filteredProducts = widget.products.where((product) {
+        if (LanguageHelper.isArabic()) {
+          return product.arabicName.toLowerCase().contains(searchQuery) ||
+              product.arabicDescription.toLowerCase().contains(searchQuery);
+        } else {
+          return product.englishName.toLowerCase().contains(searchQuery) ||
+              product.englishDescription.toLowerCase().contains(searchQuery);
+        }}).toList();
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      body: CustomScrollView(
+
+
+        slivers: [
+          ProductDetailsAppBar(store: widget.store,),
+          SliverFillRemaining(
+            child: ProductsBody(
+              isScrollable: false,
+              products: widget.products,
+              filteredProducts: filteredProducts,
+              selectedSort: selectedSort,
+              searchController: searchController,
+              priceFromController: priceFromController,
+              priceToController: priceToController,
+              formKey: formKey,
+              onSearchChanged: _filterProducts,
+              onFilterApplied: (filteredList) {
+                setState(() {
+                  filteredProducts = filteredList;
+                });
+              },
+              onSortApplied: (sort, sortedList) {
+                setState(() {
+                  selectedSort = sort;
+                  filteredProducts = sortedList;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+}
+class ProductDetailsAppBar extends StatelessWidget {
+  final StoreModel store;
+
+
+  const ProductDetailsAppBar({
+    super.key,
+    required this.store,
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool kIsArabic = LanguageHelper.isArabic();
+
+    return SliverAppBar(
+      actionsPadding: EdgeInsets.zero,
+      expandedHeight: 170,
+      pinned: true,
+      floating: false,
+      automaticallyImplyLeading: false,
+      titleTextStyle: AppStyles.bold20(context),
+      elevation: 4,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Hero(
+              tag: store.id,
+              child: StoreBar(store: store),
+            ),
+          ],
+        ),
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            final percent = ((constraints.maxHeight - kToolbarHeight) /
+                (170 - kToolbarHeight))
+                .clamp(0.0, 1.0);
+            final opacity = (1 - percent).clamp(0.0, 1.0);
+
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              height: 170 * opacity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.blue.withOpacity(0.2 * opacity)
+                    : Colors.white.withOpacity(0.1 * opacity),
+
+              ),
+              child: Row(
+                children: [
+                  // زر الرجوع
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Colors.black.withOpacity(0.5 * opacity),
+                        size: 20,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // صورة المنتج وتفاصيل
+                  Expanded(
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // صورة المنتج الصغيرة
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              store.imageUrl ?? '',
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.store, ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // اسم المنتج والتقييم
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  kIsArabic ? store.arabic_name : store.english_name,
+                                  style: AppStyles.semiBold18(context).copyWith(
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 4,
+                                        color: Colors.black.withOpacity(0.3),
+                                        offset: const Offset(1, 1),
+                                      ),
+                                    ],
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      store.rating.toString(),
+                                      style: AppStyles.bold16(context).copyWith(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // زر المفضلة
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: FavoriteButton(
+                              store: store,
+                              onTap: () async {
+                                await context
+                                    .read<StoreCubit>()
+                                    .likeOnTap(store.id);
+                              },
+                              isDark: Theme.of(context).brightness == Brightness.dark,
+
+                            ),
+                            ),
+                ],
+              ),
+            );
+          },
+        ),
+        titlePadding: EdgeInsets.zero,
+      ),
+    );
+  }
+}
+
+
+
+
+
+class StoreBar extends StatefulWidget {
+  const StoreBar({
+    super.key,
+    required this.store,
+  });
+
+  final StoreModel store;
+
+  @override
+  State<StoreBar> createState() => _StoreBarState();
+}
+
+class _StoreBarState extends State<StoreBar> {
+  late double _userRating;
+
+  @override
+  void initState() {
+    super.initState();
+    _userRating = widget.store.userRating ?? 0;
+  }
+
+  void _updateRating(double value) async {
+    setState(() => _userRating = value);
+    await context.read<StoreCubit>().rateOnTap(widget.store.id, value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+        child: Card(
+          color: Theme.of(context).cardColor,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center, // 🧠 دي مهمة علشان البادج ما ينزلش تحت
+              children: [
+                _buildStoreImage(),
+                const SizedBox(width: 16),
+                Expanded(child: _buildInfo(context)),
+              ],
+            ),
+          ),
+        ),
+      ),
+        Positioned(
+          top: 25,
+          left: 25,
+          child: FavoriteButton(
+            store: widget.store,
+            onTap: () async {
+              await context
+                  .read<StoreCubit>()
+                  .likeOnTap(widget.store.id);
+            },
+            isDark: Theme.of(context).brightness == Brightness.dark,
+
+          ),
+        ),
+
+      ]
+    );
+  }
+
+  Widget _buildStoreImage() {
+    return SizedBox(
+      width: 90,
+      height: 90,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          widget.store.imageUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Container(
+            color: Colors.grey.shade200,
+            child: Icon(Icons.store, size: 36, color: Colors.grey.shade400),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildInfo(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min, // 👈 ده بيخلي الكولوم ما يمدّش زيادة
+
+      children: [
+        // Store Name
+        Text(
+          LanguageHelper.isArabic()
+              ? widget.store.arabic_name
+              : widget.store.english_name,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        // Rating Stars
+        Tooltip(
+          enableFeedback: true,
+          message: S.of(context).yourRating,
+          child: RatingStars(
+            value: _userRating,
+            onValueChanged: _updateRating,
+            starCount: 5,
+            starSize: 22,
+            maxValue: 5,
+            valueLabelVisibility: true,
+            valueLabelTextStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              color: Colors.black,
+            ),
+            valueLabelRadius: 12,
+            valueLabelColor: Colors.amber.shade200,
+            starColor: Colors.amber,
+            starOffColor: Colors.grey.shade300,
+            animationDuration: const Duration(milliseconds: 400),
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        // Badges (Average & User)
+        Column(
+          children: [
+            _buildRatingBadge(
+              value: widget.store.rating,
+              label: S.of(context).average,
+              color: Colors.blueGrey.shade100,
+              iconColor: Colors.grey.shade800,
+            ),
+            const SizedBox(height: 8),
+            _buildRatingBadge(
+              value: _userRating,
+              label: S.of(context).yourRating,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+              iconColor: Theme.of(context).colorScheme.primary,
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildRatingBadge({
+    required double value,
+    required String label,
+    required Color color,
+    required Color iconColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.star, size: 16, color: iconColor),
+          const SizedBox(width: 4),
+          Text(
+            value.toStringAsFixed(1),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: iconColor,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: iconColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -116,6 +116,7 @@ class CartView extends StatelessWidget {
         curve: Curves.easeOut,
       )),
       child: Card(
+        color: Theme.of(context).cardColor,
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -154,7 +155,7 @@ class CartView extends StatelessWidget {
                     Text(
                       '${product.price.toStringAsFixed(2)} ${S.of(context).currency}',
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -276,7 +277,7 @@ class CartView extends StatelessWidget {
                 '${total.toStringAsFixed(2)} ${S.of(context).currency}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ],

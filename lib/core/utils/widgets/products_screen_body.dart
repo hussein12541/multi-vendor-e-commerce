@@ -18,6 +18,7 @@ class ProductsBody extends StatelessWidget {
   final Function(String) onSearchChanged;
   final Function(List<ProductModel>) onFilterApplied;
   final Function(String, List<ProductModel>) onSortApplied;
+  final bool isScrollable;
 
   const ProductsBody({
     super.key,
@@ -30,7 +31,7 @@ class ProductsBody extends StatelessWidget {
     required this.formKey,
     required this.onSearchChanged,
     required this.onFilterApplied,
-    required this.onSortApplied,
+    required this.onSortApplied,  this.isScrollable = true,
   });
 
   @override
@@ -68,6 +69,7 @@ class ProductsBody extends StatelessWidget {
         const SizedBox(height: 8),
         Expanded(
           child: CustomScrollView(
+            physics: !isScrollable?NeverScrollableScrollPhysics():null,
             slivers: [
               ProductsSliverGrid(products: filteredProducts),
               SliverToBoxAdapter(

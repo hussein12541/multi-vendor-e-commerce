@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/offer_cubit/offer_cubit.dart';
 import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/product_cubit/product_cubit.dart';
 import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/store_cubit/store_cubit.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../core/utils/widgets/products_and_stores_screen.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../cart/presentation/views/cart_view.dart';
+import '../../../../profile/presentation/views/profile_view.dart';
 import '../home_view.dart';
 
 class NavBar extends StatefulWidget {
@@ -25,6 +27,43 @@ class _NavBarState extends State<NavBar> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    requestNotificationPermission();
+  }
+
+  Future<bool> requestNotificationPermission() async {
+    try {
+      // التحقق من حالة إذن الإشعارات
+      PermissionStatus status = await Permission.notification.status;
+
+      if (status.isGranted) {
+        print("✅ إذن الإشعارات مفعّل بالفعل");
+        return true;
+      }
+
+      // طلب الإذن من المستخدم
+      status = await Permission.notification.request();
+
+      if (status.isGranted) {
+        print("🎉 تم منح إذن الإشعارات");
+        return true;
+      } else if (status.isPermanentlyDenied) {
+        print("⛔ تم رفض الإذن نهائيًا (لازم تروح الإعدادات وتفعّله يدويًا)");
+        // هنا ممكن تفتح صفحة الإعدادات للمستخدم
+        await openAppSettings();
+      } else {
+        print("⚠️ تم رفض إذن الإشعارات");
+      }
+    } catch (e) {
+      print("❌ حصل خطأ أثناء طلب الإذن: $e");
+    }
+
+    return false;
   }
 
   @override
@@ -51,10 +90,10 @@ class _NavBarState extends State<NavBar> {
             .read<ProductCubit>()
             .products
             .where((element) => element.wishlists.isNotEmpty)
-            .toList(),
+            .toList(), title: S.of(context).favorites,
       ),
       const CartView(),
-      const HomeView(),
+      const ProfileScreen(),
     ];
 
     return Skeletonizer(
@@ -124,10 +163,10 @@ class _NavBarState extends State<NavBar> {
                 BottomNavigationBarItem(
                   icon: Icon(
                     (_selectedIndex == 3)
-                        ? Icons.favorite_outlined
-                        : Icons.favorite_outline,
+                        ? Icons.person
+                        : Icons.person_outline,
                   ),
-                  label: S.of(context).favorites,
+                  label: S.of(context).profile,
                 ),
               ],
             ),

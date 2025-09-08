@@ -5,7 +5,8 @@ class StoreModel {
   final String arabic_name;
   final String english_name;
   final String imageUrl;
-  final String description;
+  final String arabic_description;
+  final String english_description;
   final String? deleteImageUrl;
   final DateTime createdAt;
   final bool isShow;
@@ -20,7 +21,8 @@ class StoreModel {
     required this.arabic_name,
     required this.english_name,
     required this.imageUrl,
-    required this.description,
+    required this.arabic_description,
+    required this.english_description,
     required this.userId,
     required this.createdAt,
     required this.isShow,
@@ -36,7 +38,8 @@ class StoreModel {
     String? arabic_name,
     String? english_name,
     String? imageUrl,
-    String? description,
+    String? arabic_description,
+    String? english_description,
     String? userId,
     DateTime? createdAt,
     bool? isShow,
@@ -51,7 +54,8 @@ class StoreModel {
       arabic_name: arabic_name ?? this.arabic_name,
       english_name: english_name ?? this.english_name,
       imageUrl: imageUrl ?? this.imageUrl,
-      description: description ?? this.description,
+      arabic_description: arabic_description ?? this.arabic_description,
+      english_description: english_description ?? this.english_description,
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
       isShow: isShow ?? this.isShow,
@@ -68,7 +72,8 @@ class StoreModel {
       'arabic_name': arabic_name,
       'english_name': english_name,
       'image_url': imageUrl,
-      'description': description,
+      'arabic_description': arabic_description,
+      'english_description': english_description,
       'user_id': userId,
       'created_at': createdAt.toIso8601String(),
       'is_show': isShow,
@@ -106,7 +111,8 @@ class StoreModel {
       arabic_name: json['arabic_name'] ?? '',
       english_name: json['english_name'] ?? '',
       imageUrl: json['image_url'] ?? '',
-      description: json['description'] ?? '',
+      arabic_description: json['arabic_description'] ?? '',
+      english_description: json['english_description'] ?? '',
       userId: json['user_id'] ?? '',
       createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
       isShow: json['is_show'] ?? true,

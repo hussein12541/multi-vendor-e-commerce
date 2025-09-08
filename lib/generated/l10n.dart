@@ -664,6 +664,526 @@ class S {
       args: [],
     );
   }
+
+  /// `About Us`
+  String get about_us {
+    return Intl.message('About Us', name: 'about_us', desc: '', args: []);
+  }
+
+  /// `Choose Language`
+  String get choose_language {
+    return Intl.message(
+      'Choose Language',
+      name: 'choose_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message('English', name: 'english', desc: '', args: []);
+  }
+
+  /// `General`
+  String get general {
+    return Intl.message('General', name: 'general', desc: '', args: []);
+  }
+
+  /// `My Orders`
+  String get myOrders {
+    return Intl.message('My Orders', name: 'myOrders', desc: '', args: []);
+  }
+
+  /// `Language`
+  String get language {
+    return Intl.message('Language', name: 'language', desc: '', args: []);
+  }
+
+  /// `Change Password`
+  String get changePassword {
+    return Intl.message(
+      'Change Password',
+      name: 'changePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help`
+  String get help {
+    return Intl.message('Help', name: 'help', desc: '', args: []);
+  }
+
+  /// `Contact Support`
+  String get contact_support {
+    return Intl.message(
+      'Contact Support',
+      name: 'contact_support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unexpected Error`
+  String get unexpectedError {
+    return Intl.message(
+      'Unexpected Error',
+      name: 'unexpectedError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
+
+  /// `Dark Mode`
+  String get dark_mode {
+    return Intl.message('Dark Mode', name: 'dark_mode', desc: '', args: []);
+  }
+
+  /// `New Password`
+  String get newPassword {
+    return Intl.message(
+      'New Password',
+      name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password`
+  String get confirmPassword {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This field is required`
+  String get requiredField {
+    return Intl.message(
+      'This field is required',
+      name: 'requiredField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get passwordsDoNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'passwordsDoNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password changed successfully ✅`
+  String get passwordChanged {
+    return Intl.message(
+      'Password changed successfully ✅',
+      name: 'passwordChanged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password change failed ❌`
+  String get passwordChangeFailed {
+    return Intl.message(
+      'Password change failed ❌',
+      name: 'passwordChangeFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred: {error}`
+  String errorOccurred(Object error) {
+    return Intl.message(
+      'An error occurred: $error',
+      name: 'errorOccurred',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Save Changes`
+  String get saveChanges {
+    return Intl.message(
+      'Save Changes',
+      name: 'saveChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At [Store Name], we believe that online shopping should be an enjoyable, easy, and secure experience. From the very beginning, our goal has been to build a comprehensive e-commerce platform that offers our customers high-quality products at affordable prices, with full transparency and reliability at every step of the purchasing process.\n\nOur aim is to be more than just a store – we see ourselves as partners in fulfilling our customers’ everyday needs and making their lives easier. Whether you’re looking for the latest products, the best deals, or outstanding after-sales service, we are here to deliver the quality and care you deserve.\n\nOur vision is to become the leading destination for online shopping in the Arab world, by focusing on innovation, customer satisfaction, and constantly expanding our product range. We believe that trust is built over time, which is why we are committed to providing an exceptional shopping experience that not only meets but exceeds your expectations.`
+  String get about_us_content {
+    return Intl.message(
+      'At [Store Name], we believe that online shopping should be an enjoyable, easy, and secure experience. From the very beginning, our goal has been to build a comprehensive e-commerce platform that offers our customers high-quality products at affordable prices, with full transparency and reliability at every step of the purchasing process.\n\nOur aim is to be more than just a store – we see ourselves as partners in fulfilling our customers’ everyday needs and making their lives easier. Whether you’re looking for the latest products, the best deals, or outstanding after-sales service, we are here to deliver the quality and care you deserve.\n\nOur vision is to become the leading destination for online shopping in the Arab world, by focusing on innovation, customer satisfaction, and constantly expanding our product range. We believe that trust is built over time, which is why we are committed to providing an exceptional shopping experience that not only meets but exceeds your expectations.',
+      name: 'about_us_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shipping`
+  String get shipping {
+    return Intl.message('Shipping', name: 'shipping', desc: '', args: []);
+  }
+
+  /// `User Details:`
+  String get userDetails {
+    return Intl.message(
+      'User Details:',
+      name: 'userDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Name`
+  String get fullName {
+    return Intl.message('Full Name', name: 'fullName', desc: '', args: []);
+  }
+
+  /// `Phone Number`
+  String get phone {
+    return Intl.message('Phone Number', name: 'phone', desc: '', args: []);
+  }
+
+  /// `Delivery Address`
+  String get deliveryAddress {
+    return Intl.message(
+      'Delivery Address',
+      name: 'deliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment:`
+  String get payment {
+    return Intl.message('Payment:', name: 'payment', desc: '', args: []);
+  }
+
+  /// `Cash on Delivery`
+  String get cashOnDelivery {
+    return Intl.message(
+      'Cash on Delivery',
+      name: 'cashOnDelivery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay Online`
+  String get payOnline {
+    return Intl.message('Pay Online', name: 'payOnline', desc: '', args: []);
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message('Next', name: 'next', desc: '', args: []);
+  }
+
+  /// `Please complete the required fields`
+  String get pleaseFillData {
+    return Intl.message(
+      'Please complete the required fields',
+      name: 'pleaseFillData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your full name`
+  String get pleaseEnterFullName {
+    return Intl.message(
+      'Please enter your full name',
+      name: 'pleaseEnterFullName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your phone number`
+  String get pleaseEnterPhone {
+    return Intl.message(
+      'Please enter your phone number',
+      name: 'pleaseEnterPhone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your delivery address`
+  String get pleaseEnterAddress {
+    return Intl.message(
+      'Please enter your delivery address',
+      name: 'pleaseEnterAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading location...`
+  String get loading_location {
+    return Intl.message(
+      'Loading location...',
+      name: 'loading_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to fetch address`
+  String get failed_to_fetch_address {
+    return Intl.message(
+      'Failed to fetch address',
+      name: 'failed_to_fetch_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please wait for location to be determined`
+  String get please_wait_for_location {
+    return Intl.message(
+      'Please wait for location to be determined',
+      name: 'please_wait_for_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Location`
+  String get confirm_location {
+    return Intl.message(
+      'Confirm Location',
+      name: 'confirm_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `en`
+  String get localeName {
+    return Intl.message('en', name: 'localeName', desc: '', args: []);
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+  }
+
+  /// `Phone Number`
+  String get phone_number {
+    return Intl.message(
+      'Phone Number',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get address {
+    return Intl.message('Address', name: 'address', desc: '', args: []);
+  }
+
+  /// `Subtotal`
+  String get subtotal {
+    return Intl.message('Subtotal', name: 'subtotal', desc: '', args: []);
+  }
+
+  /// `Delivery`
+  String get delivery {
+    return Intl.message('Delivery', name: 'delivery', desc: '', args: []);
+  }
+
+  /// `Payment Method`
+  String get payment_method {
+    return Intl.message(
+      'Payment Method',
+      name: 'payment_method',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Summary:`
+  String get order_summary {
+    return Intl.message(
+      'Order Summary:',
+      name: 'order_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Stores Found`
+  String get no_stores_found {
+    return Intl.message(
+      'No Stores Found',
+      name: 'no_stores_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Products Found`
+  String get no_products_found {
+    return Intl.message(
+      'No Products Found',
+      name: 'no_products_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Search Results`
+  String get searchResults {
+    return Intl.message(
+      'Search Results',
+      name: 'searchResults',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order`
+  String get order {
+    return Intl.message('Order', name: 'order', desc: '', args: []);
+  }
+
+  /// `Items`
+  String get items {
+    return Intl.message('Items', name: 'items', desc: '', args: []);
+  }
+
+  /// `More items`
+  String get moreItems {
+    return Intl.message('More items', name: 'moreItems', desc: '', args: []);
+  }
+
+  /// `Pending`
+  String get pending {
+    return Intl.message('Pending', name: 'pending', desc: '', args: []);
+  }
+
+  /// `Confirmed`
+  String get confirmed {
+    return Intl.message('Confirmed', name: 'confirmed', desc: '', args: []);
+  }
+
+  /// `Shipped`
+  String get shipped {
+    return Intl.message('Shipped', name: 'shipped', desc: '', args: []);
+  }
+
+  /// `Delivered`
+  String get delivered {
+    return Intl.message('Delivered', name: 'delivered', desc: '', args: []);
+  }
+
+  /// `Canceled`
+  String get canceled {
+    return Intl.message('Canceled', name: 'canceled', desc: '', args: []);
+  }
+
+  /// `Unknown`
+  String get unknown {
+    return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
+  }
+
+  /// `No Orders Found`
+  String get noOrders {
+    return Intl.message(
+      'No Orders Found',
+      name: 'noOrders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No orders available`
+  String get noOrdersSubtitle {
+    return Intl.message(
+      'No orders available',
+      name: 'noOrdersSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Date`
+  String get orderDate {
+    return Intl.message('Order Date', name: 'orderDate', desc: '', args: []);
+  }
+
+  /// `Track Order`
+  String get trackOrder {
+    return Intl.message('Track Order', name: 'trackOrder', desc: '', args: []);
+  }
+
+  /// `View Details`
+  String get viewDetails {
+    return Intl.message(
+      'View Details',
+      name: 'viewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity`
+  String get quantity {
+    return Intl.message('Quantity', name: 'quantity', desc: '', args: []);
+  }
+
+  /// `Cancel Order`
+  String get cancelOrder {
+    return Intl.message(
+      'Cancel Order',
+      name: 'cancelOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The order is out for delivery, please contact support`
+  String get orderOutForDelivery {
+    return Intl.message(
+      'The order is out for delivery, please contact support',
+      name: 'orderOutForDelivery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

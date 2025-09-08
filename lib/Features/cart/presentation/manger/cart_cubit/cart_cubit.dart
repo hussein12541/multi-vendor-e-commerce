@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_vendor_e_commerce_app/Features/cart/data/repos/cart_repo.dart';
+import 'package:multi_vendor_e_commerce_app/Features/home/presentation/manger/product_cubit/product_cubit.dart';
 import 'package:multi_vendor_e_commerce_app/generated/l10n.dart';
 
 import '../../../../../core/utils/functions/is_arabic.dart';
@@ -54,12 +56,14 @@ class CartCubit extends Cubit<CartState> {
     emit(CartUpdated(cart));
   }
 
-  Future<String>addProductToCart( {required CartModel cart,required String name,required String phone,required String address,required bool isPaid,required String addressUrl,required double price,})async{
+  Future<String>addProductToCart( {required BuildContext context,required CartModel cart,required String name,required String phone,required String address,required bool isPaid,required String addressUrl,required double price,})async{
     emit(AddItemsToCartLoading());
     final result = await repo.addProductToCart(cart: cart,name: name,phone: phone,address: address,isPaid: isPaid,addressUrl: addressUrl,price: price);
+
+    await context.read<ProductCubit>().getProducts();
     return result.fold(
       (failure) {
-        log(failure.errMessage);  
+        log("addProductToCart error"+failure.errMessage);
         emit(AddItemsToCartError());
     
         return failure.errMessage;

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "981258504919",
+    "project_id": "flutter-push-notificatio-c0c45",
+    "storage_bucket": "flutter-push-notificatio-c0c45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981258504919:android:e63bdca8e84a7dbb383e92",
+        "android_client_info": {
+          "package_name": "com.example.insta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDma7eKK-cw3NKXsArNPRGL2yTlhqqXMMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981258504919:android:75e074453f5259ed383e92",
+        "android_client_info": {
+          "package_name": "com.example.multi_vendor_e_commerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDma7eKK-cw3NKXsArNPRGL2yTlhqqXMMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
